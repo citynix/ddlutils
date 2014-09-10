@@ -31,13 +31,13 @@
    		 The Core Library for ddlutils
   	</description>
   <dependencies>
-    <dependency>
-      <groupId>ant</groupId>
-      <artifactId>ant</artifactId>
-      <version>1.6.5</version>
-      <scope>compile</scope>
-      <optional>true</optional>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>ant</groupId> -->
+<!--       <artifactId>ant</artifactId> -->
+<!--       <version>1.6.5</version> -->
+<!--       <scope>compile</scope> -->
+<!--       <optional>true</optional> -->
+<!--     </dependency> -->
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
