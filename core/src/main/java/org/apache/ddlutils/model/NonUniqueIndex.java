@@ -29,121 +29,105 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * 
  * @version $Revision: 289996 $
  */
-public class NonUniqueIndex extends IndexImplBase
-{
-    /** Unique ID for serialization purposes. */
-    private static final long serialVersionUID = -3591499395114850301L;
+public class NonUniqueIndex extends IndexImplBase {
+	/** Unique ID for serialization purposes. */
+	private static final long serialVersionUID = -3591499395114850301L;
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isUnique()
-    {
-        return false;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isUnique() {
+		return false;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public Index getClone() throws ModelException
-    {
-        NonUniqueIndex result = new NonUniqueIndex();
+	/**
+	 * {@inheritDoc}
+	 */
+	public Index getClone() throws ModelException {
+		NonUniqueIndex result = new NonUniqueIndex();
 
-        result._name    = _name;
-        result._columns = (ArrayList)_columns.clone();
+		result._name = _name;
+		result._columns = (ArrayList) _columns.clone();
 
-        return result;
-    }
+		return result;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean equals(Object obj)
-    {
-        if (obj instanceof NonUniqueIndex)
-        {
-            NonUniqueIndex other = (NonUniqueIndex)obj;
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean equals(Object obj) {
+		if (obj instanceof NonUniqueIndex) {
+			NonUniqueIndex other = (NonUniqueIndex) obj;
 
-            return new EqualsBuilder().append(_name,    other._name)
-                                      .append(_columns, other._columns)
-                                      .isEquals();
-        }
-        else
-        {
-            return false;
-        }
-    }
+			return new EqualsBuilder().append(_name, other._name)
+					.append(_columns, other._columns).isEquals();
+		} else {
+			return false;
+		}
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean equalsIgnoreCase(Index other)
-    {
-        if (other instanceof NonUniqueIndex)
-        {
-            NonUniqueIndex otherIndex = (NonUniqueIndex)other;
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean equalsIgnoreCase(Index other) {
+		if (other instanceof NonUniqueIndex) {
+			NonUniqueIndex otherIndex = (NonUniqueIndex) other;
 
-            boolean checkName = (_name != null) && (_name.length() > 0) &&
-                                (otherIndex._name != null) && (otherIndex._name.length() > 0);
+			boolean checkName = (_name != null) && (_name.length() > 0)
+					&& (otherIndex._name != null)
+					&& (otherIndex._name.length() > 0);
 
-            if ((!checkName || _name.equalsIgnoreCase(otherIndex._name)) &&
-                (getColumnCount() == otherIndex.getColumnCount()))
-            {
-                for (int idx = 0; idx < getColumnCount(); idx++)
-                {
-                    if (!getColumn(idx).equalsIgnoreCase(otherIndex.getColumn(idx)))
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
-        return false;
-    }
+			if ((!checkName || _name.equalsIgnoreCase(otherIndex._name))
+					&& (getColumnCount() == otherIndex.getColumnCount())) {
+				for (int idx = 0; idx < getColumnCount(); idx++) {
+					if (!getColumn(idx).equalsIgnoreCase(
+							otherIndex.getColumn(idx))) {
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+		return false;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public int hashCode()
-    {
-        return new HashCodeBuilder(17, 37).append(_name)
-                                          .append(_columns)
-                                          .toHashCode();
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder(17, 37).append(_name).append(_columns)
+				.toHashCode();
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public String toString()
-    {
-        StringBuffer result = new StringBuffer();
+	/**
+	 * {@inheritDoc}
+	 */
+	public String toString() {
+		StringBuffer result = new StringBuffer();
 
-        result.append("Index [name=");
-        result.append(getName());
-        result.append("; ");
-        result.append(getColumnCount());
-        result.append(" columns]");
+		result.append("Index [name=");
+		result.append(getName());
+		result.append("; ");
+		result.append(getColumnCount());
+		result.append(" columns]");
 
-        return result.toString();
-    }
+		return result.toString();
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public String toVerboseString()
-    {
-        StringBuffer result = new StringBuffer();
+	/**
+	 * {@inheritDoc}
+	 */
+	public String toVerboseString() {
+		StringBuffer result = new StringBuffer();
 
-        result.append("Index [");
-        result.append(getName());
-        result.append("] columns:");
-        for (int idx = 0; idx < getColumnCount(); idx++)
-        {
-            result.append(" ");
-            result.append(getColumn(idx).toString());
-        }
+		result.append("Index [");
+		result.append(getName());
+		result.append("] columns:");
+		for (int idx = 0; idx < getColumnCount(); idx++) {
+			result.append(" ");
+			result.append(getColumn(idx).toString());
+		}
 
-        return result.toString();
-    }
+		return result.toString();
+	}
 }

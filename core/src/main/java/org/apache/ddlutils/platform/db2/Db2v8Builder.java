@@ -30,30 +30,30 @@ import org.apache.ddlutils.model.Table;
  * 
  * @version $Revision: $
  */
-public class Db2v8Builder extends Db2Builder
-{
-    /**
-     * Creates a new builder instance.
-     * 
-     * @param platform The plaftform this builder belongs to
-     */
-    public Db2v8Builder(Platform platform)
-    {
-        super(platform);
-    }
+public class Db2v8Builder extends Db2Builder {
+	/**
+	 * Creates a new builder instance.
+	 * 
+	 * @param platform
+	 *            The plaftform this builder belongs to
+	 */
+	public Db2v8Builder(Platform platform) {
+		super(platform);
+	}
 
-    /**
-     * Generates the SQL to drop a column from a table.
-     * 
-     * @param table  The table where to drop the column from
-     * @param column The column to drop
-     */
-    public void dropColumn(Table table, Column column) throws IOException
-    {
-        super.dropColumn(table, column);
-        print("CALL ADMIN_CMD('REORG TABLE ");
-        printIdentifier(getTableName(table));
-        print("')");
-        printEndOfStatement();
-    }
+	/**
+	 * Generates the SQL to drop a column from a table.
+	 * 
+	 * @param table
+	 *            The table where to drop the column from
+	 * @param column
+	 *            The column to drop
+	 */
+	public void dropColumn(Table table, Column column) throws IOException {
+		super.dropColumn(table, column);
+		print("CALL ADMIN_CMD('REORG TABLE ");
+		printIdentifier(getTableName(table));
+		print("')");
+		printEndOfStatement();
+	}
 }

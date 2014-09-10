@@ -25,20 +25,18 @@ package org.apache.ddlutils.platform;
  * 
  * @version $Revision: $
  */
-public class TestPlatform extends PlatformImplBase
-{
-    /**
-     * Creates a new test platform instance.
-     */
-    public TestPlatform()
-    {
-        setSqlBuilder(new SqlBuilder(this) {});
-    }
-    /**
-     * {@inheritDoc}
-     */
-    public String getName()
-    {
-        return "TestPlatform";
-    }
+public class TestPlatform extends PlatformImplBase {
+	/**
+	 * Creates a new test platform instance.
+	 */
+	public TestPlatform() {
+		setSqlBuilder(new SqlBuilder(this) {
+		});
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public String getName() {
+		return "TestPlatform";
+	}
 }

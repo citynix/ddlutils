@@ -29,24 +29,24 @@ import org.apache.ddlutils.model.ForeignKey;
  * 
  * @version $Revision: $
  */
-public class RemoveForeignKeyChange extends ForeignKeyChangeImplBase
-{
-    /**
-     * Creates a new change object.
-     * 
-     * @param tableName  The name of the table to remove the foreign key from
-     * @param foreignKey The foreign key
-     */
-    public RemoveForeignKeyChange(String tableName, ForeignKey foreignKey)
-    {
-        super(tableName, foreignKey);
-    }
+public class RemoveForeignKeyChange extends ForeignKeyChangeImplBase {
+	/**
+	 * Creates a new change object.
+	 * 
+	 * @param tableName
+	 *            The name of the table to remove the foreign key from
+	 * @param foreignKey
+	 *            The foreign key
+	 */
+	public RemoveForeignKeyChange(String tableName, ForeignKey foreignKey) {
+		super(tableName, foreignKey);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public void apply(Database model, boolean caseSensitive)
-    {
-        findChangedTable(model, caseSensitive).removeForeignKey(findChangedForeignKey(model, caseSensitive));
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public void apply(Database model, boolean caseSensitive) {
+		findChangedTable(model, caseSensitive).removeForeignKey(
+				findChangedForeignKey(model, caseSensitive));
+	}
 }

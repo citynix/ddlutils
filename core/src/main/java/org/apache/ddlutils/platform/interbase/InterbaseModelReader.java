@@ -43,465 +43,429 @@ import org.apache.ddlutils.platform.JdbcModelReader;
 
 /**
  * The Jdbc Model Reader for Interbase.
- *
+ * 
  * @version $Revision: $
  */
-public class InterbaseModelReader extends JdbcModelReader
-{
-    /**
-     * Creates a new model reader for Interbase databases.
-     * 
-     * @param platform The platform that this model reader belongs to
-     */
-    public InterbaseModelReader(Platform platform)
-    {
-        super(platform);
-        setDefaultCatalogPattern(null);
-        setDefaultSchemaPattern(null);
-        setDefaultTablePattern("%");
-        setDefaultColumnPattern("%");
-    }
+public class InterbaseModelReader extends JdbcModelReader {
+	/**
+	 * Creates a new model reader for Interbase databases.
+	 * 
+	 * @param platform
+	 *            The platform that this model reader belongs to
+	 */
+	public InterbaseModelReader(Platform platform) {
+		super(platform);
+		setDefaultCatalogPattern(null);
+		setDefaultSchemaPattern(null);
+		setDefaultTablePattern("%");
+		setDefaultColumnPattern("%");
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    protected Table readTable(DatabaseMetaDataWrapper metaData, Map values) throws SQLException
-    {
-        Table table = super.readTable(metaData, values);
+	/**
+	 * {@inheritDoc}
+	 */
+	protected Table readTable(DatabaseMetaDataWrapper metaData, Map values)
+			throws SQLException {
+		Table table = super.readTable(metaData, values);
 
-        if (table != null)
-        {
-            determineExtraColumnInfo(table);
-            determineAutoIncrementColumns(table);
-            adjustColumns(table);
-        }
+		if (table != null) {
+			determineExtraColumnInfo(table);
+			determineAutoIncrementColumns(table);
+			adjustColumns(table);
+		}
 
-        return table;
-    }
+		return table;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    protected Collection readColumns(DatabaseMetaDataWrapper metaData, String tableName) throws SQLException
-    {
-        ResultSet columnData = null;
+	/**
+	 * {@inheritDoc}
+	 */
+	protected Collection readColumns(DatabaseMetaDataWrapper metaData,
+			String tableName) throws SQLException {
+		ResultSet columnData = null;
 
-        try
-        {
-            List columns = new ArrayList();
+		try {
+			List columns = new ArrayList();
 
-            if (getPlatform().isDelimitedIdentifierModeOn())
-            {
-                // Jaybird has a problem when delimited identifiers are used as
-                // it is not able to find the columns for the table
-                // So we have to filter manually below
-                columnData = metaData.getColumns(getDefaultTablePattern(), getDefaultColumnPattern());
+			if (getPlatform().isDelimitedIdentifierModeOn()) {
+				// Jaybird has a problem when delimited identifiers are used as
+				// it is not able to find the columns for the table
+				// So we have to filter manually below
+				columnData = metaData.getColumns(getDefaultTablePattern(),
+						getDefaultColumnPattern());
 
-                while (columnData.next())
-                {
-                    Map values = readColumns(columnData, getColumnsForColumn());
+				while (columnData.next()) {
+					Map values = readColumns(columnData, getColumnsForColumn());
 
-                    if (tableName.equals(values.get("TABLE_NAME")))
-                    {
-                        columns.add(readColumn(metaData, values));
-                    }
-                }
-            }
-            else
-            {
-                columnData = metaData.getColumns(metaData.escapeForSearch(tableName), getDefaultColumnPattern());
+					if (tableName.equals(values.get("TABLE_NAME"))) {
+						columns.add(readColumn(metaData, values));
+					}
+				}
+			} else {
+				columnData = metaData.getColumns(
+						metaData.escapeForSearch(tableName),
+						getDefaultColumnPattern());
 
-                while (columnData.next())
-                {
-                    Map values = readColumns(columnData, getColumnsForColumn());
+				while (columnData.next()) {
+					Map values = readColumns(columnData, getColumnsForColumn());
 
-                    columns.add(readColumn(metaData, values));
-                }
-            }
+					columns.add(readColumn(metaData, values));
+				}
+			}
 
-            return columns;
-        }
-        finally
-        {
-            closeResultSet(columnData);
-        }
-    }
+			return columns;
+		} finally {
+			closeResultSet(columnData);
+		}
+	}
 
-    /**
-     * Helper method that determines extra column info from the system tables: default value, precision, scale.
-     *
-     * @param table The table
-     */
-    protected void determineExtraColumnInfo(Table table) throws SQLException
-    {
-        final String query =
-            "SELECT a.RDB$FIELD_NAME, a.RDB$DEFAULT_SOURCE, b.RDB$FIELD_PRECISION, b.RDB$FIELD_SCALE," +
-            " b.RDB$FIELD_TYPE, b.RDB$FIELD_SUB_TYPE FROM RDB$RELATION_FIELDS a, RDB$FIELDS b" +
-            " WHERE a.RDB$RELATION_NAME=? AND a.RDB$FIELD_SOURCE=b.RDB$FIELD_NAME";
+	/**
+	 * Helper method that determines extra column info from the system tables:
+	 * default value, precision, scale.
+	 * 
+	 * @param table
+	 *            The table
+	 */
+	protected void determineExtraColumnInfo(Table table) throws SQLException {
+		final String query = "SELECT a.RDB$FIELD_NAME, a.RDB$DEFAULT_SOURCE, b.RDB$FIELD_PRECISION, b.RDB$FIELD_SCALE,"
+				+ " b.RDB$FIELD_TYPE, b.RDB$FIELD_SUB_TYPE FROM RDB$RELATION_FIELDS a, RDB$FIELDS b"
+				+ " WHERE a.RDB$RELATION_NAME=? AND a.RDB$FIELD_SOURCE=b.RDB$FIELD_NAME";
 
-        PreparedStatement prepStmt = null;
+		PreparedStatement prepStmt = null;
 
-        try
-        {
-            prepStmt = getConnection().prepareStatement(query);
-            prepStmt.setString(1, getPlatform().isDelimitedIdentifierModeOn() ? table.getName() : table.getName().toUpperCase());
+		try {
+			prepStmt = getConnection().prepareStatement(query);
+			prepStmt.setString(1, getPlatform().isDelimitedIdentifierModeOn()
+					? table.getName()
+					: table.getName().toUpperCase());
 
-            ResultSet rs = prepStmt.executeQuery();
+			ResultSet rs = prepStmt.executeQuery();
 
-            while (rs.next())
-            {
-                String columnName = rs.getString(1).trim();
-                Column column     = table.findColumn(columnName, getPlatform().isDelimitedIdentifierModeOn());
+			while (rs.next()) {
+				String columnName = rs.getString(1).trim();
+				Column column = table.findColumn(columnName, getPlatform()
+						.isDelimitedIdentifierModeOn());
 
-                if (column != null)
-                {
-                    String defaultValue = rs.getString(2);
+				if (column != null) {
+					String defaultValue = rs.getString(2);
 
-                    if (!rs.wasNull() && (defaultValue != null))
-                    {
-                        defaultValue = defaultValue.trim();
-                        if (defaultValue.startsWith("DEFAULT "))
-                        {
-                            defaultValue = defaultValue.substring("DEFAULT ".length());
-                        }
-                        column.setDefaultValue(defaultValue);
-                    }
-                    
-                    short   precision          = rs.getShort(3);
-                    boolean precisionSpecified = !rs.wasNull();
-                    short   scale              = rs.getShort(4);
-                    boolean scaleSpecified     = !rs.wasNull();
+					if (!rs.wasNull() && (defaultValue != null)) {
+						defaultValue = defaultValue.trim();
+						if (defaultValue.startsWith("DEFAULT ")) {
+							defaultValue = defaultValue.substring("DEFAULT "
+									.length());
+						}
+						column.setDefaultValue(defaultValue);
+					}
 
-                    if (precisionSpecified)
-                    {
-                        // for some reason, Interbase stores the negative scale
-                        column.setSizeAndScale(precision, scaleSpecified ? -scale : 0);
-                    }
+					short precision = rs.getShort(3);
+					boolean precisionSpecified = !rs.wasNull();
+					short scale = rs.getShort(4);
+					boolean scaleSpecified = !rs.wasNull();
 
-                    short dbType      = rs.getShort(5);
-                    short blobSubType = rs.getShort(6);
+					if (precisionSpecified) {
+						// for some reason, Interbase stores the negative scale
+						column.setSizeAndScale(precision, scaleSpecified
+								? -scale
+								: 0);
+					}
 
-                    // CLOBs are returned by the driver as VARCHAR
-                    if (!rs.wasNull() && (dbType == 261) && (blobSubType == 1))
-                    {
-                        column.setTypeCode(Types.CLOB);
-                    }
-                }
-            }
-        }
-        finally
-        {
-            closeStatement(prepStmt);
-        }
-    }
+					short dbType = rs.getShort(5);
+					short blobSubType = rs.getShort(6);
 
-    /**
-     * Helper method that determines the auto increment status using Interbase's system tables.
-     *
-     * @param table The table
-     */
-    protected void determineAutoIncrementColumns(Table table) throws SQLException
-    {
-        // Since for long table and column names, the generator name will be shortened
-        // we have to determine for each column whether there is a generator for it
-        final String query = "SELECT RDB$GENERATOR_NAME FROM RDB$GENERATORS";
+					// CLOBs are returned by the driver as VARCHAR
+					if (!rs.wasNull() && (dbType == 261) && (blobSubType == 1)) {
+						column.setTypeCode(Types.CLOB);
+					}
+				}
+			}
+		} finally {
+			closeStatement(prepStmt);
+		}
+	}
 
-        InterbaseBuilder builder = (InterbaseBuilder)getPlatform().getSqlBuilder();
-        Column[]         columns = table.getColumns();
-        HashMap          names   = new HashMap();
-        String           name;
+	/**
+	 * Helper method that determines the auto increment status using Interbase's
+	 * system tables.
+	 * 
+	 * @param table
+	 *            The table
+	 */
+	protected void determineAutoIncrementColumns(Table table)
+			throws SQLException {
+		// Since for long table and column names, the generator name will be
+		// shortened
+		// we have to determine for each column whether there is a generator for
+		// it
+		final String query = "SELECT RDB$GENERATOR_NAME FROM RDB$GENERATORS";
 
-        for (int idx = 0; idx < columns.length; idx++)
-        {
-            name = builder.getGeneratorName(table, columns[idx]);
-            if (!getPlatform().isDelimitedIdentifierModeOn())
-            {
-                name = name.toUpperCase();
-            }
-            names.put(name, columns[idx]);
-        }
+		InterbaseBuilder builder = (InterbaseBuilder) getPlatform()
+				.getSqlBuilder();
+		Column[] columns = table.getColumns();
+		HashMap names = new HashMap();
+		String name;
 
-        Statement stmt = null;
+		for (int idx = 0; idx < columns.length; idx++) {
+			name = builder.getGeneratorName(table, columns[idx]);
+			if (!getPlatform().isDelimitedIdentifierModeOn()) {
+				name = name.toUpperCase();
+			}
+			names.put(name, columns[idx]);
+		}
 
-        try
-        {
-            stmt = getConnection().createStatement();
+		Statement stmt = null;
 
-            ResultSet rs = stmt.executeQuery(query);
+		try {
+			stmt = getConnection().createStatement();
 
-            while (rs.next())
-            {
-                String generatorName = rs.getString(1).trim();
-                Column column        = (Column)names.get(generatorName);
+			ResultSet rs = stmt.executeQuery(query);
 
-                if (column != null)
-                {
-                    column.setAutoIncrement(true);
-                }
-            }
-        }
-        finally
-        {
-            closeStatement(stmt);
-        }
-    }
+			while (rs.next()) {
+				String generatorName = rs.getString(1).trim();
+				Column column = (Column) names.get(generatorName);
 
-    /**
-     * Adjusts the columns in the table by fixing types and default values.
-     * 
-     * @param table The table
-     */
-    protected void adjustColumns(Table table)
-    {
-        Column[] columns = table.getColumns();
+				if (column != null) {
+					column.setAutoIncrement(true);
+				}
+			}
+		} finally {
+			closeStatement(stmt);
+		}
+	}
 
-        for (int idx = 0; idx < columns.length; idx++)
-        {
-            if (columns[idx].getTypeCode() == Types.FLOAT)
-            {
-                columns[idx].setTypeCode(Types.REAL);
-            }
-            else if ((columns[idx].getTypeCode() == Types.NUMERIC) || (columns[idx].getTypeCode() == Types.DECIMAL))
-            {
-                if ((columns[idx].getTypeCode() == Types.NUMERIC) && (columns[idx].getSizeAsInt() == 18) && (columns[idx].getScale() == 0))
-                {
-                    columns[idx].setTypeCode(Types.BIGINT);
-                }
-            }
-            else if (TypeMap.isTextType(columns[idx].getTypeCode()))
-            {
-                columns[idx].setDefaultValue(unescape(columns[idx].getDefaultValue(), "'", "''"));
-            }
-        }
-    }
+	/**
+	 * Adjusts the columns in the table by fixing types and default values.
+	 * 
+	 * @param table
+	 *            The table
+	 */
+	protected void adjustColumns(Table table) {
+		Column[] columns = table.getColumns();
 
-    /**
-     * {@inheritDoc}
-     */
-    protected Collection readPrimaryKeyNames(DatabaseMetaDataWrapper metaData, String tableName) throws SQLException
-    {
-        List      pks   = new ArrayList();
-        ResultSet pkData = null;
+		for (int idx = 0; idx < columns.length; idx++) {
+			if (columns[idx].getTypeCode() == Types.FLOAT) {
+				columns[idx].setTypeCode(Types.REAL);
+			} else if ((columns[idx].getTypeCode() == Types.NUMERIC)
+					|| (columns[idx].getTypeCode() == Types.DECIMAL)) {
+				if ((columns[idx].getTypeCode() == Types.NUMERIC)
+						&& (columns[idx].getSizeAsInt() == 18)
+						&& (columns[idx].getScale() == 0)) {
+					columns[idx].setTypeCode(Types.BIGINT);
+				}
+			} else if (TypeMap.isTextType(columns[idx].getTypeCode())) {
+				columns[idx].setDefaultValue(unescape(
+						columns[idx].getDefaultValue(), "'", "''"));
+			}
+		}
+	}
 
-        try
-        {
-            if (getPlatform().isDelimitedIdentifierModeOn())
-            {
-                // Jaybird has a problem when delimited identifiers are used as
-                // it is not able to find the primary key info for the table
-                // So we have to filter manually below
-                pkData = metaData.getPrimaryKeys(getDefaultTablePattern());
-                while (pkData.next())
-                {
-                    Map values = readColumns(pkData, getColumnsForPK());
-    
-                    if (tableName.equals(values.get("TABLE_NAME")))
-                    {
-                        pks.add(readPrimaryKeyName(metaData, values));
-                    }
-                }
-            }
-            else
-            {
-                pkData = metaData.getPrimaryKeys(metaData.escapeForSearch(tableName));
-                while (pkData.next())
-                {
-                    Map values = readColumns(pkData, getColumnsForPK());
-    
-                    pks.add(readPrimaryKeyName(metaData, values));
-                }
-            }
-        }
-        finally
-        {
-            closeResultSet(pkData);
-        }
-        return pks;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	protected Collection readPrimaryKeyNames(DatabaseMetaDataWrapper metaData,
+			String tableName) throws SQLException {
+		List pks = new ArrayList();
+		ResultSet pkData = null;
 
-    /**
-     * {@inheritDoc}
-     */
-    protected Collection readForeignKeys(DatabaseMetaDataWrapper metaData, String tableName) throws SQLException
-    {
-        Map       fks    = new ListOrderedMap();
-        ResultSet fkData = null;
+		try {
+			if (getPlatform().isDelimitedIdentifierModeOn()) {
+				// Jaybird has a problem when delimited identifiers are used as
+				// it is not able to find the primary key info for the table
+				// So we have to filter manually below
+				pkData = metaData.getPrimaryKeys(getDefaultTablePattern());
+				while (pkData.next()) {
+					Map values = readColumns(pkData, getColumnsForPK());
 
-        try
-        {
-            if (getPlatform().isDelimitedIdentifierModeOn())
-            {
-                // Jaybird has a problem when delimited identifiers are used as
-                // it is not able to find the foreign key info for the table
-                // So we have to filter manually below
-                fkData = metaData.getForeignKeys(getDefaultTablePattern());
-                while (fkData.next())
-                {
-                    Map values = readColumns(fkData, getColumnsForFK());
-    
-                    if (tableName.equals(values.get("FKTABLE_NAME")))
-                    {
-                        readForeignKey(metaData, values, fks);
-                    }
-                }
-            }
-            else
-            {
-                fkData = metaData.getForeignKeys(metaData.escapeForSearch(tableName));
-                while (fkData.next())
-                {
-                    Map values = readColumns(fkData, getColumnsForFK());
-    
-                    readForeignKey(metaData, values, fks);
-                }
-            }
-        }
-        finally
-        {
-            closeResultSet(fkData);
-        }
-        return fks.values();
-    }
+					if (tableName.equals(values.get("TABLE_NAME"))) {
+						pks.add(readPrimaryKeyName(metaData, values));
+					}
+				}
+			} else {
+				pkData = metaData.getPrimaryKeys(metaData
+						.escapeForSearch(tableName));
+				while (pkData.next()) {
+					Map values = readColumns(pkData, getColumnsForPK());
 
-    /**
-     * {@inheritDoc}
-     */
-    protected boolean isInternalPrimaryKeyIndex(DatabaseMetaDataWrapper metaData, Table table, Index index) throws SQLException
-    {
-        final String query =
-            "SELECT RDB$CONSTRAINT_NAME FROM RDB$RELATION_CONSTRAINTS " +
-            "WHERE RDB$RELATION_NAME=? AND RDB$CONSTRAINT_TYPE=? AND RDB$INDEX_NAME=?";
+					pks.add(readPrimaryKeyName(metaData, values));
+				}
+			}
+		} finally {
+			closeResultSet(pkData);
+		}
+		return pks;
+	}
 
-        String            tableName = getPlatform().getSqlBuilder().getTableName(table);
-        String            indexName = getPlatform().getSqlBuilder().getIndexName(index);
-        PreparedStatement stmt      = null;
+	/**
+	 * {@inheritDoc}
+	 */
+	protected Collection readForeignKeys(DatabaseMetaDataWrapper metaData,
+			String tableName) throws SQLException {
+		Map fks = new ListOrderedMap();
+		ResultSet fkData = null;
 
-        try 
-        {
-            stmt = getConnection().prepareStatement(query);
-            stmt.setString(1, getPlatform().isDelimitedIdentifierModeOn() ? tableName : tableName.toUpperCase());
-            stmt.setString(2, "PRIMARY KEY");
-            stmt.setString(3, indexName);
+		try {
+			if (getPlatform().isDelimitedIdentifierModeOn()) {
+				// Jaybird has a problem when delimited identifiers are used as
+				// it is not able to find the foreign key info for the table
+				// So we have to filter manually below
+				fkData = metaData.getForeignKeys(getDefaultTablePattern());
+				while (fkData.next()) {
+					Map values = readColumns(fkData, getColumnsForFK());
 
-            ResultSet resultSet = stmt.executeQuery();
+					if (tableName.equals(values.get("FKTABLE_NAME"))) {
+						readForeignKey(metaData, values, fks);
+					}
+				}
+			} else {
+				fkData = metaData.getForeignKeys(metaData
+						.escapeForSearch(tableName));
+				while (fkData.next()) {
+					Map values = readColumns(fkData, getColumnsForFK());
 
-            return resultSet.next();
-        }
-        finally
-        {
-            closeStatement(stmt);
-        }
-    }
+					readForeignKey(metaData, values, fks);
+				}
+			}
+		} finally {
+			closeResultSet(fkData);
+		}
+		return fks.values();
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    protected boolean isInternalForeignKeyIndex(DatabaseMetaDataWrapper metaData, Table table, ForeignKey fk, Index index) throws SQLException
-    {
-        final String query =
-            "SELECT RDB$CONSTRAINT_NAME FROM RDB$RELATION_CONSTRAINTS " +
-            "WHERE RDB$RELATION_NAME=? AND RDB$CONSTRAINT_TYPE=? AND RDB$CONSTRAINT_NAME=? AND RDB$INDEX_NAME=?";
+	/**
+	 * {@inheritDoc}
+	 */
+	protected boolean isInternalPrimaryKeyIndex(
+			DatabaseMetaDataWrapper metaData, Table table, Index index)
+			throws SQLException {
+		final String query = "SELECT RDB$CONSTRAINT_NAME FROM RDB$RELATION_CONSTRAINTS "
+				+ "WHERE RDB$RELATION_NAME=? AND RDB$CONSTRAINT_TYPE=? AND RDB$INDEX_NAME=?";
 
-        String            tableName = getPlatform().getSqlBuilder().getTableName(table);
-        String            indexName = getPlatform().getSqlBuilder().getIndexName(index);
-        String            fkName    = getPlatform().getSqlBuilder().getForeignKeyName(table, fk);
-        PreparedStatement stmt      = null;
+		String tableName = getPlatform().getSqlBuilder().getTableName(table);
+		String indexName = getPlatform().getSqlBuilder().getIndexName(index);
+		PreparedStatement stmt = null;
 
-        try 
-        {
-            stmt = getConnection().prepareStatement(query);
-            stmt.setString(1, getPlatform().isDelimitedIdentifierModeOn() ? tableName : tableName.toUpperCase());
-            stmt.setString(2, "FOREIGN KEY");
-            stmt.setString(3, fkName);
-            stmt.setString(4, indexName);
+		try {
+			stmt = getConnection().prepareStatement(query);
+			stmt.setString(1, getPlatform().isDelimitedIdentifierModeOn()
+					? tableName
+					: tableName.toUpperCase());
+			stmt.setString(2, "PRIMARY KEY");
+			stmt.setString(3, indexName);
 
-            ResultSet resultSet = stmt.executeQuery();
+			ResultSet resultSet = stmt.executeQuery();
 
-            return resultSet.next();
-        }
-        finally
-        {
-            closeStatement(stmt);
-        }
-    }
+			return resultSet.next();
+		} finally {
+			closeStatement(stmt);
+		}
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public String determineSchemaOf(Connection connection, String schemaPattern, Table table) throws SQLException
-    {
-        ResultSet tableData  = null;
-        ResultSet columnData = null;
+	/**
+	 * {@inheritDoc}
+	 */
+	protected boolean isInternalForeignKeyIndex(
+			DatabaseMetaDataWrapper metaData, Table table, ForeignKey fk,
+			Index index) throws SQLException {
+		final String query = "SELECT RDB$CONSTRAINT_NAME FROM RDB$RELATION_CONSTRAINTS "
+				+ "WHERE RDB$RELATION_NAME=? AND RDB$CONSTRAINT_TYPE=? AND RDB$CONSTRAINT_NAME=? AND RDB$INDEX_NAME=?";
 
-        try
-        {
-            DatabaseMetaDataWrapper metaData = new DatabaseMetaDataWrapper();
+		String tableName = getPlatform().getSqlBuilder().getTableName(table);
+		String indexName = getPlatform().getSqlBuilder().getIndexName(index);
+		String fkName = getPlatform().getSqlBuilder().getForeignKeyName(table,
+				fk);
+		PreparedStatement stmt = null;
 
-            metaData.setMetaData(connection.getMetaData());
-            metaData.setCatalog(getDefaultCatalogPattern());
-            metaData.setSchemaPattern(schemaPattern == null ? getDefaultSchemaPattern() : schemaPattern);
-            metaData.setTableTypes(getDefaultTableTypes());
+		try {
+			stmt = getConnection().prepareStatement(query);
+			stmt.setString(1, getPlatform().isDelimitedIdentifierModeOn()
+					? tableName
+					: tableName.toUpperCase());
+			stmt.setString(2, "FOREIGN KEY");
+			stmt.setString(3, fkName);
+			stmt.setString(4, indexName);
 
-            String tablePattern = table.getName();
+			ResultSet resultSet = stmt.executeQuery();
 
-            if (getPlatform().isDelimitedIdentifierModeOn())
-            {
-                tablePattern = tablePattern.toUpperCase();
-            }
+			return resultSet.next();
+		} finally {
+			closeStatement(stmt);
+		}
+	}
 
-            tableData = metaData.getTables(metaData.escapeForSearch(tablePattern));
+	/**
+	 * {@inheritDoc}
+	 */
+	public String determineSchemaOf(Connection connection,
+			String schemaPattern, Table table) throws SQLException {
+		ResultSet tableData = null;
+		ResultSet columnData = null;
 
-            boolean found  = false;
-            String  schema = null;
+		try {
+			DatabaseMetaDataWrapper metaData = new DatabaseMetaDataWrapper();
 
-            while (!found && tableData.next())
-            {
-                Map    values    = readColumns(tableData, getColumnsForTable());
-                String tableName = (String)values.get("TABLE_NAME");
+			metaData.setMetaData(connection.getMetaData());
+			metaData.setCatalog(getDefaultCatalogPattern());
+			metaData.setSchemaPattern(schemaPattern == null
+					? getDefaultSchemaPattern()
+					: schemaPattern);
+			metaData.setTableTypes(getDefaultTableTypes());
 
-                if ((tableName != null) && (tableName.length() > 0))
-                {
-                    schema = (String)values.get("TABLE_SCHEM");
-                    found  = true;
+			String tablePattern = table.getName();
 
-                    if (getPlatform().isDelimitedIdentifierModeOn())
-                    {
-                        // Jaybird has a problem when delimited identifiers are used as
-                        // it is not able to find the columns for the table
-                        // So we have to filter manually below
-                        columnData = metaData.getColumns(getDefaultTablePattern(), getDefaultColumnPattern());
-                    }
-                    else
-                    {
-                        columnData = metaData.getColumns(metaData.escapeForSearch(tableName), getDefaultColumnPattern());
-                    }
+			if (getPlatform().isDelimitedIdentifierModeOn()) {
+				tablePattern = tablePattern.toUpperCase();
+			}
 
-                    while (found && columnData.next())
-                    {
-                        values = readColumns(columnData, getColumnsForColumn());
+			tableData = metaData.getTables(metaData
+					.escapeForSearch(tablePattern));
 
-                        if (getPlatform().isDelimitedIdentifierModeOn() &&
-                            !tableName.equals(values.get("TABLE_NAME")))
-                        {
-                            continue;
-                        }
+			boolean found = false;
+			String schema = null;
 
-                        if (table.findColumn((String)values.get("COLUMN_NAME"),
-                                             getPlatform().isDelimitedIdentifierModeOn()) == null)
-                        {
-                            found = false;
-                        }
-                    }
-                    columnData.close();
-                    columnData = null;
-                }
-            }
-            return found ? schema : null;
-        }
-        finally
-        {
-            closeResultSet(columnData);
-            closeResultSet(tableData);
-        }
-    }
+			while (!found && tableData.next()) {
+				Map values = readColumns(tableData, getColumnsForTable());
+				String tableName = (String) values.get("TABLE_NAME");
+
+				if ((tableName != null) && (tableName.length() > 0)) {
+					schema = (String) values.get("TABLE_SCHEM");
+					found = true;
+
+					if (getPlatform().isDelimitedIdentifierModeOn()) {
+						// Jaybird has a problem when delimited identifiers are
+						// used as
+						// it is not able to find the columns for the table
+						// So we have to filter manually below
+						columnData = metaData.getColumns(
+								getDefaultTablePattern(),
+								getDefaultColumnPattern());
+					} else {
+						columnData = metaData.getColumns(
+								metaData.escapeForSearch(tableName),
+								getDefaultColumnPattern());
+					}
+
+					while (found && columnData.next()) {
+						values = readColumns(columnData, getColumnsForColumn());
+
+						if (getPlatform().isDelimitedIdentifierModeOn()
+								&& !tableName.equals(values.get("TABLE_NAME"))) {
+							continue;
+						}
+
+						if (table.findColumn(
+								(String) values.get("COLUMN_NAME"),
+								getPlatform().isDelimitedIdentifierModeOn()) == null) {
+							found = false;
+						}
+					}
+					columnData.close();
+					columnData = null;
+				}
+			}
+			return found ? schema : null;
+		} finally {
+			closeResultSet(columnData);
+			closeResultSet(tableData);
+		}
+	}
 }

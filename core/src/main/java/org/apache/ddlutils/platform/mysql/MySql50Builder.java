@@ -29,25 +29,24 @@ import org.apache.ddlutils.model.Table;
  * 
  * @version $Revision: $
  */
-public class MySql50Builder extends MySqlBuilder
-{
-    /**
-     * Creates a new builder instance.
-     * 
-     * @param platform The plaftform this builder belongs to
-     */
-    public MySql50Builder(Platform platform)
-    {
-        super(platform);
-    }
+public class MySql50Builder extends MySqlBuilder {
+	/**
+	 * Creates a new builder instance.
+	 * 
+	 * @param platform
+	 *            The plaftform this builder belongs to
+	 */
+	public MySql50Builder(Platform platform) {
+		super(platform);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void copyData(Table sourceTable, Table targetTable) throws IOException
-    {
-        print("SET sql_mode=''");
-        printEndOfStatement();
-        super.copyData(sourceTable, targetTable);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	protected void copyData(Table sourceTable, Table targetTable)
+			throws IOException {
+		print("SET sql_mode=''");
+		printEndOfStatement();
+		super.copyData(sourceTable, targetTable);
+	}
 }
