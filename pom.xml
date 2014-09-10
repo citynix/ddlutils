@@ -125,11 +125,11 @@
           </dependency>
         </dependencies>
       </plugin>
-            <plugin>
-		            <groupId>com.googlecode.maven-java-formatter-plugin</groupId>
-			            <artifactId>maven-java-formatter-plugin</artifactId>
-				            <version>0.4</version>
-					          </plugin>
+      <plugin>
+        <groupId>com.googlecode.maven-java-formatter-plugin</groupId>
+        <artifactId>maven-java-formatter-plugin</artifactId>
+        <version>0.4</version>
+      </plugin>
     </plugins>
   </build>
 </project>

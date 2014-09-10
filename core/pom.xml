@@ -17,20 +17,17 @@
   specific language governing permissions and limitations
   under the License.
 -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.apache.ddlutils</groupId>
-		<artifactId>ddlutils</artifactId>
-		<version>1.4-SNAPSHOT</version>
-	</parent>
-	<artifactId>ddlutils-core</artifactId>
-	<packaging>jar</packaging>
-	<name>Apache DdlUtils :: Core</name>
-	<description>
+  <parent>
+    <groupId>org.apache.ddlutils</groupId>
+    <artifactId>ddlutils</artifactId>
+    <version>1.4-SNAPSHOT</version>
+  </parent>
+  <artifactId>ddlutils-core</artifactId>
+  <packaging>jar</packaging>
+  <name>Apache DdlUtils :: Core</name>
+  <description>
    		 The Core Library for ddlutils
   	</description>
   <dependencies>
@@ -112,7 +109,7 @@
       <scope>runtime</scope>
       <optional>true</optional>
     </dependency>
-<!-- 
+    <!-- 
     <dependency>
       <groupId>axion</groupId>
       <artifactId>axion</artifactId>
@@ -152,16 +149,15 @@
  -->
     <!-- NB: No public driver for DB2, interbase, sapdb, oracle, sqlserver -->
   </dependencies>
-
   <profiles>
     <profile>
       <id>checkstyle</id>
       <build>
         <defaultGoal>checkstyle:checkstyle</defaultGoal>
-	    <plugins>
-	      <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-checkstyle-plugin</artifactId>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
             <configuration>
               <consoleOutput>true</consoleOutput>
               <failsOnError>true</failsOnError>
@@ -169,11 +165,10 @@
               <configLocation>src/main/checkstyle/ddlutils-checks.xml</configLocation>
               <headerLocation>src/main/checkstyle/license-check.txt</headerLocation>
             </configuration>
-	      </plugin>
-	    </plugins>
-	  </build>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
-
     <profile>
       <activation>
         <property>
@@ -189,50 +184,22 @@
           <scope>test</scope>
         </dependency>
       </dependencies>
-	  <build>
-	    <plugins>
-	      <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-surefire-plugin</artifactId>
-	        <configuration>
-	          <systemProperties>
-	            <property>
-	              <name>jdbc.properties.file</name>
-	              <value>/jdbc.properties.hsqldb</value>
-	            </property>
-	          </systemProperties>
-	        </configuration>
-	      </plugin>
-	    </plugins>
-	  </build>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <systemProperties>
+                <property>
+                  <name>jdbc.properties.file</name>
+                  <value>/jdbc.properties.hsqldb</value>
+                </property>
+              </systemProperties>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
-
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.4</version>
-        <reportSets>
-          <reportSet>
-            <reports></reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.8</version>
-        <configuration>
-          <stylesheetfile>src/site/javadoc/stylesheet.css</stylesheetfile>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.tomdz.maven</groupId>
-        <artifactId>sphinx-maven-plugin</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-      </plugin>
-    </plugins>
-  </reporting>
 </project>
