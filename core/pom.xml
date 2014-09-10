@@ -22,88 +22,17 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-   <groupId>org.apache</groupId>
-   <artifactId>apache</artifactId>
-   <version>9</version>
-  </parent>
-  <groupId>org.apache.ddlutils</groupId>
-  <artifactId>ddlutils</artifactId>
-  <packaging>jar</packaging>
-  <version>1.1</version>
-  <name>Apache DdlUtils</name>
-  <description>
-    DdlUtils is a small, easy-to-use component for working with Database Definition (DDL) files.
-  </description>
-  <inceptionYear>2005</inceptionYear>
-  <url>http://db.apache.org/ddlutils</url>
-  
-  <mailingLists>
-    <mailingList>
-      <name>Ddlutils Dev List</name>
-      <post>ddlutils-dev@db.apache.org</post>
-      <subscribe>ddlutils-dev-subscribe@db.apache.org</subscribe>
-      <unsubscribe>ddlutils-dev-unsubscribe@db.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/db-ddlutils-dev/</archive>
-      <otherArchives>
-        <otherArchive>http://www.mail-archive.com/ddlutils-dev@db.apache.org/</otherArchive>
-        <otherArchive>http://www.nabble.com/Apache-DdlUtils---Dev-f14475.html</otherArchive>
-      </otherArchives>
-    </mailingList>
-    <mailingList>
-      <name>Ddlutils User List</name>
-      <post>ddlutils-user@db.apache.org</post>
-      <subscribe>ddlutils-user-subscribe@db.apache.org</subscribe>
-      <unsubscribe>ddlutils-user-unsubscribe@db.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/db-ddlutils-user/</archive>
-      <otherArchives>
-        <otherArchive>http://www.mail-archive.com/ddlutils-user@db.apache.org/</otherArchive>
-        <otherArchive>http://www.nabble.com/Apache-DdlUtils---User-f14474.html</otherArchive>
-      </otherArchives>
-    </mailingList>
-  </mailingLists>
-
-  <issueManagement>
-    <system>jira</system>
-    <url>http://issues.apache.org/jira/browse/DDLUTILS</url>
-  </issueManagement>
-
-  <developers>
-    <developer>
-      <id>tomdz</id>
-      <name>Thomas Dudziak</name>
-      <email>tomdz@apache.org</email>
-      <organization>ASF</organization>
-    </developer>
-    <developer>
-      <id>mvdb</id>
-      <name>Martin van den Bemt</name>
-      <email>mvdb@apache.org</email>
-      <organization>ASF</organization>
-    </developer>
-  </developers>
-
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/db/ddlutils/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/db/ddlutils/trunk/</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/db/ddlutils/trunk/</url>
-  </scm>
-
-  <distributionManagement>
-    <site>
-      <id>apache.website</id>
-      <url>scp://minotaur.apache.org/www/db.apache.org/ddlutils/</url>
-    </site>
-  </distributionManagement>
-
+	<parent>
+		<groupId>org.apache.ddlutils</groupId>
+		<artifactId>ddlutils</artifactId>
+		<version>1.4-SNAPSHOT</version>
+	</parent>
+	<artifactId>ddlutils-core</artifactId>
+	<packaging>jar</packaging>
+	<name>Apache DdlUtils :: Core</name>
+	<description>
+   		 The Core Library for ddlutils
+  	</description>
   <dependencies>
     <dependency>
       <groupId>ant</groupId>

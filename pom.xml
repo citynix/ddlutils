@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.ddlutils</groupId>
+  <artifactId>ddlutils</artifactId>
+  <version>1.4-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Apache DdlUtils</name>
+  <description>
+    DdlUtils is a small, easy-to-use component for working with Database Definition (DDL) files.
+  </description>
+  <inceptionYear>2005</inceptionYear>
+  <url>http://db.apache.org/ddlutils</url>
+  <mailingLists>
+    <mailingList>
+      <name>Ddlutils Dev List</name>
+      <post>ddlutils-dev@db.apache.org</post>
+      <subscribe>ddlutils-dev-subscribe@db.apache.org</subscribe>
+      <unsubscribe>ddlutils-dev-unsubscribe@db.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/db-ddlutils-dev/</archive>
+      <otherArchives>
+        <otherArchive>http://www.mail-archive.com/ddlutils-dev@db.apache.org/</otherArchive>
+        <otherArchive>http://www.nabble.com/Apache-DdlUtils---Dev-f14475.html</otherArchive>
+      </otherArchives>
+    </mailingList>
+    <mailingList>
+      <name>Ddlutils User List</name>
+      <post>ddlutils-user@db.apache.org</post>
+      <subscribe>ddlutils-user-subscribe@db.apache.org</subscribe>
+      <unsubscribe>ddlutils-user-unsubscribe@db.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/db-ddlutils-user/</archive>
+      <otherArchives>
+        <otherArchive>http://www.mail-archive.com/ddlutils-user@db.apache.org/</otherArchive>
+        <otherArchive>http://www.nabble.com/Apache-DdlUtils---User-f14474.html</otherArchive>
+      </otherArchives>
+    </mailingList>
+  </mailingLists>
+  <issueManagement>
+    <system>jira</system>
+    <url>http://issues.apache.org/jira/browse/DDLUTILS</url>
+  </issueManagement>
+  <developers>
+    <developer>
+      <id>tomdz</id>
+      <name>Thomas Dudziak</name>
+      <email>tomdz@apache.org</email>
+      <organization>ASF</organization>
+    </developer>
+    <developer>
+      <id>mvdb</id>
+      <name>Martin van den Bemt</name>
+      <email>mvdb@apache.org</email>
+      <organization>ASF</organization>
+    </developer>
+  </developers>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/db/ddlutils/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/db/ddlutils/trunk/</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/db/ddlutils/trunk/</url>
+  </scm>
+  <distributionManagement>
+    <site>
+      <id>apache.website</id>
+      <url>scp://minotaur.apache.org/www/db.apache.org/ddlutils/</url>
+    </site>
+  </distributionManagement>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.4</version>
+        <reportSets>
+          <reportSet>
+            <reports/>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.8</version>
+        <configuration>
+          <stylesheetfile>src/site/javadoc/stylesheet.css</stylesheetfile>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.tomdz.maven</groupId>
+        <artifactId>sphinx-maven-plugin</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+      </plugin>
+    </plugins>
+  </reporting>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jalopy-maven-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <configuration>
+          <failOnError>false</failOnError>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>build-configs</artifactId>
+            <version>1.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+            <plugin>
+		            <groupId>com.googlecode.maven-java-formatter-plugin</groupId>
+			            <artifactId>maven-java-formatter-plugin</artifactId>
+				            <version>0.4</version>
+					          </plugin>
+    </plugins>
+  </build>
+</project>
