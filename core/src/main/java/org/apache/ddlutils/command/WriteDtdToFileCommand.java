@@ -27,64 +27,60 @@ import org.apache.ddlutils.model.Database;
 
 /**
  * Creates a DTD that specifies the layout for data XML files.<br/>
- * This sub task does not require a database connection, so the <code>dataSource</code>
- * sub element of the enclosing task can be omitted.
+ * This sub task does not require a database connection, so the
+ * <code>dataSource</code> sub element of the enclosing task can be omitted.
  * 
  * @version $Revision: 289996 $
  * @ant.task name="writeDtdToFile"
  */
-public class WriteDtdToFileCommand extends DatabaseCommandWithModel
-{
-    /** The file to output the DTD to. */
-    private File _outputFile;
+public class WriteDtdToFileCommand extends DatabaseCommandWithModel {
+	/** The file to output the DTD to. */
+	private File _outputFile;
 
-    /**
-     * Specifies the name of the file to write the DTD to.
-     * 
-     * @param outputFile The output file
-     * @ant.required
-     */
-    public void setOutputFile(File outputFile)
-    {
-        _outputFile = outputFile;
-    }
+	/**
+	 * Specifies the name of the file to write the DTD to.
+	 * 
+	 * @param outputFile
+	 *            The output file
+	 * @ant.required
+	 */
+	public void setOutputFile(File outputFile) {
+		_outputFile = outputFile;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isRequiringModel()
-    {
-        return true;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isRequiringModel() {
+		return true;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public void execute() throws CommandException
-    {
-        if (_outputFile == null)
-        {
-            throw new CommandException("No output file specified");
-        }
-        if (_outputFile.exists() && !_outputFile.canWrite())
-        {
-            throw new CommandException("Cannot overwrite output file " + _outputFile.getAbsolutePath());
-        }
+	/**
+	 * {@inheritDoc}
+	 */
+	public void execute() throws CommandException {
+		if (_outputFile == null) {
+			throw new CommandException("No output file specified");
+		}
+		if (_outputFile.exists() && !_outputFile.canWrite()) {
+			throw new CommandException("Cannot overwrite output file "
+					+ _outputFile.getAbsolutePath());
+		}
 
-        Database model = super.getDatabaseModel();
-        
-        try
-        {
-            FileWriter    outputWriter = new FileWriter(_outputFile);
-            DataDtdWriter dtdWriter    = new DataDtdWriter();
+		Database model = super.getDatabaseModel();
 
-            dtdWriter.writeDtd(model, outputWriter);
-            outputWriter.close();
-            _log.info("Written DTD to " + _outputFile.getAbsolutePath());
-        }
-        catch (Exception ex)
-        {
-            handleException(ex, "Failed to write to output file " + _outputFile.getAbsolutePath());
-        }
-    }
+		try {
+			FileWriter outputWriter = new FileWriter(_outputFile);
+			DataDtdWriter dtdWriter = new DataDtdWriter();
+
+			dtdWriter.writeDtd(model, outputWriter);
+			outputWriter.close();
+			_log.info("Written DTD to " + _outputFile.getAbsolutePath());
+		} catch (Exception ex) {
+			handleException(
+					ex,
+					"Failed to write to output file "
+							+ _outputFile.getAbsolutePath());
+		}
+	}
 }

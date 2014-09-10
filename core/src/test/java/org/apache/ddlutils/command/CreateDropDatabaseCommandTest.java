@@ -11,97 +11,99 @@ import org.junit.Test;
 
 public class CreateDropDatabaseCommandTest {
 
-    @Test
-    public void create() {
+	@Test
+	public void create() {
 
-	List<PlatformConfigurationMock> lst = CommandTestUtility.getAvailableConfiguration();
+		List<PlatformConfigurationMock> lst = CommandTestUtility
+				.getAvailableConfiguration();
 
-	String expected = "ddlutils";
+		String expected = "ddlutils";
 
-	for (PlatformConfigurationMock config : lst) {
+		for (PlatformConfigurationMock config : lst) {
 
-	    boolean isSupported = config.isCreateSupported();
-	    if (!isSupported)
-		continue;
+			boolean isSupported = config.isCreateSupported();
+			if (!isSupported)
+				continue;
 
-	    CreateDatabaseCommand createCommand = new CreateDatabaseCommand();
+			CreateDatabaseCommand createCommand = new CreateDatabaseCommand();
 
-	    createCommand.setPlatformConfiguration(config);
+			createCommand.setPlatformConfiguration(config);
 
-	    try {
+			try {
 
-		createCommand.execute();
+				createCommand.execute();
 
-		Connection conn = config.getDataSource().getConnection();
+				Connection conn = config.getDataSource().getConnection();
 
-		String catName = testCatalogExist(conn);
+				String catName = testCatalogExist(conn);
 
-		assertEquals(expected, catName);
+				assertEquals(expected, catName);
 
-	    } catch (CommandException e) {
-		e.printStackTrace();
-	    } catch (SQLException e) {
-		e.printStackTrace();
-	    }
+			} catch (CommandException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		CommandTestUtility.release(lst);
+
 	}
 
-	CommandTestUtility.release(lst);
+	@Test
+	public void drop() {
 
-    }
+		List<PlatformConfigurationMock> lst = CommandTestUtility
+				.getAvailableConfiguration();
 
-    @Test
-    public void drop() {
+		String expected = "ddlutils";
 
-	List<PlatformConfigurationMock> lst = CommandTestUtility.getAvailableConfiguration();
+		for (PlatformConfigurationMock config : lst) {
 
-	String expected = "ddlutils";
+			try {
 
-	for (PlatformConfigurationMock config : lst) {
+				String dbtype = config.getPlatform().getName();
 
-	    try {
+				boolean isSupported = config.isDropSupported();
 
-		String dbtype = config.getPlatform().getName();
+				if (!isSupported)
+					continue;
 
-		boolean isSupported = config.isDropSupported();
+				DropDatabaseCommand dropCommand = new DropDatabaseCommand();
 
-		if (!isSupported)
-		    continue;
+				dropCommand.setPlatformConfiguration(config);
 
-		DropDatabaseCommand dropCommand = new DropDatabaseCommand();
+				dropCommand.execute();
 
-		dropCommand.setPlatformConfiguration(config);
+				Connection conn = config.getDataSource().getConnection();
 
-		dropCommand.execute();
+				String catName = testCatalogExist(conn);
 
-		Connection conn = config.getDataSource().getConnection();
+				assertEquals(expected, catName);
 
-		String catName = testCatalogExist(conn);
+			} catch (CommandException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
-		assertEquals(expected, catName);
+		CommandTestUtility.release(lst);
 
-	    } catch (CommandException e) {
-		e.printStackTrace();
-	    } catch (SQLException e) {
-		e.printStackTrace();
-	    }
 	}
 
-	CommandTestUtility.release(lst);
-
-    }
-
-    private String testCatalogExist(Connection connection) {
-	ResultSet resultSet;
-	try {
-	    resultSet = connection.getMetaData().getCatalogs();
-	    while (resultSet.next()) {
-		String databaseName = resultSet.getString(1);
-		return databaseName;
-	    }
-	    resultSet.close();
-	} catch (SQLException e) {
-	    e.printStackTrace();
+	private String testCatalogExist(Connection connection) {
+		ResultSet resultSet;
+		try {
+			resultSet = connection.getMetaData().getCatalogs();
+			while (resultSet.next()) {
+				String databaseName = resultSet.getString(1);
+				return databaseName;
+			}
+			resultSet.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
-	return null;
-    }
 }

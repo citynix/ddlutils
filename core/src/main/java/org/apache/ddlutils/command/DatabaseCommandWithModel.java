@@ -27,14 +27,12 @@ abstract class DatabaseCommandWithModel extends DatabaseCommand {
 	public void setConfiguration(PlatformConfiguration configuration) {
 		this.configuration = configuration;
 	}
-	
+
 	/**
-     * {@inheritDoc}
-     */
-    public boolean isRequiringModel()
-    {
-        return true;
-    }
-    
+	 * {@inheritDoc}
+	 */
+	public boolean isRequiringModel() {
+		return true;
+	}
 
 }

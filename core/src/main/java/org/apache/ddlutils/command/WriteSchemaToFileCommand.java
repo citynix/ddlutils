@@ -26,62 +26,58 @@ import org.apache.ddlutils.io.DatabaseIO;
 import org.apache.ddlutils.model.Database;
 
 /**
- * Reads the schema of the live database (as specified in the enclosing task), and writes
- * it as XML to a file.
+ * Reads the schema of the live database (as specified in the enclosing task),
+ * and writes it as XML to a file.
  * 
  * @version $Revision: 289996 $
  * @ant.task name="writeSchemaToFile"
  */
-public class WriteSchemaToFileCommand extends DatabaseCommandWithModel
-{
-    /** The file to output the schema to. */
-    private File _outputFile;
+public class WriteSchemaToFileCommand extends DatabaseCommandWithModel {
+	/** The file to output the schema to. */
+	private File _outputFile;
 
-    /**
-     * Specifies the name of the file to write the schema XML to.
-     * 
-     * @param outputFile The output file
-     * @ant.required
-     */
-    public void setOutputFile(File outputFile)
-    {
-        _outputFile = outputFile;
-    }
+	/**
+	 * Specifies the name of the file to write the schema XML to.
+	 * 
+	 * @param outputFile
+	 *            The output file
+	 * @ant.required
+	 */
+	public void setOutputFile(File outputFile) {
+		_outputFile = outputFile;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isRequiringModel()
-    {
-        return true;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isRequiringModel() {
+		return true;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public void execute() throws CommandException
-    {
-        if (_outputFile == null)
-        {
-            throw new CommandException("No output file specified");
-        }
-        if (_outputFile.exists() && !_outputFile.canWrite())
-        {
-            throw new CommandException("Cannot overwrite output file "+_outputFile.getAbsolutePath());
-        }
+	/**
+	 * {@inheritDoc}
+	 */
+	public void execute() throws CommandException {
+		if (_outputFile == null) {
+			throw new CommandException("No output file specified");
+		}
+		if (_outputFile.exists() && !_outputFile.canWrite()) {
+			throw new CommandException("Cannot overwrite output file "
+					+ _outputFile.getAbsolutePath());
+		}
 
-        try
-        {
-            FileWriter outputWriter = new FileWriter(_outputFile);
-            DatabaseIO dbIO         = new DatabaseIO();
-            Database model = super.getDatabaseModel();
-            dbIO.write(model, outputWriter);
-            outputWriter.close();
-            _log.info("Written schema to " + _outputFile.getAbsolutePath());
-        }
-        catch (Exception ex)
-        {
-            handleException(ex, "Failed to write to output file " + _outputFile.getAbsolutePath());
-        }
-    }
+		try {
+			FileWriter outputWriter = new FileWriter(_outputFile);
+			DatabaseIO dbIO = new DatabaseIO();
+			Database model = super.getDatabaseModel();
+			dbIO.write(model, outputWriter);
+			outputWriter.close();
+			_log.info("Written schema to " + _outputFile.getAbsolutePath());
+		} catch (Exception ex) {
+			handleException(
+					ex,
+					"Failed to write to output file "
+							+ _outputFile.getAbsolutePath());
+		}
+	}
 }
