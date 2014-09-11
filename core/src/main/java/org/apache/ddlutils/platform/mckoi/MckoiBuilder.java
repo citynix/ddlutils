@@ -31,7 +31,7 @@ import org.apache.ddlutils.platform.SqlBuilder;
 /**
  * The SQL Builder for the Mckoi database.
  * 
- * @version $Revision$
+ * @version $Revision: 602807 $
  */
 public class MckoiBuilder extends SqlBuilder {
 	/**

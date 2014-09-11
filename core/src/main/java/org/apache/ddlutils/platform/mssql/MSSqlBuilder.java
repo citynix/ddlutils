@@ -39,7 +39,7 @@ import org.apache.ddlutils.platform.SqlBuilder;
 /**
  * The SQL Builder for the Microsoft SQL Server.
  * 
- * @version $Revision$
+ * @version $Revision: 893917 $
  */
 public class MSSqlBuilder extends SqlBuilder {
 	/** We use a generic date format. */

@@ -54,7 +54,7 @@ import org.xml.sax.InputSource;
 /**
  * This class provides functions to read and write database models from/to XML.
  * 
- * @version $Revision$
+ * @version $Revision: 987978 $
  */
 public class DatabaseIO {
 	/**

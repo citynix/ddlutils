@@ -35,7 +35,7 @@ import org.apache.ddlutils.util.StringUtilsExt;
 /**
  * The SQL Builder for SapDB.
  * 
- * @version $Revision$
+ * @version $Revision: 893941 $
  */
 public class SapDbBuilder extends SqlBuilder {
 	/**

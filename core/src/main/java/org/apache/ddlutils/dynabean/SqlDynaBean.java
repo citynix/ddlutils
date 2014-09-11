@@ -27,7 +27,7 @@ import org.apache.commons.beanutils.DynaProperty;
  * SqlDynaBean is a DynaBean which can be persisted as a single row in a
  * Database Table.
  * 
- * @version $Revision$
+ * @version $Revision: 1098483 $
  */
 public class SqlDynaBean extends BasicDynaBean {
 	/** Unique ID for serializaion purposes. */

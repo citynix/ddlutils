@@ -60,7 +60,7 @@ import org.apache.ddlutils.util.StringUtilsExt;
  * complex when attempting to reuse code across many databases. Hopefully only a
  * small amount code needs to be changed on a per database basis.
  * 
- * @version $Revision$
+ * @version $Revision: 893941 $
  */
 public abstract class SqlBuilder {
 	/** The line separator for in between sql commands. */

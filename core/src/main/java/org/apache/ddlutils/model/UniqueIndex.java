@@ -28,7 +28,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
  * &lt;unique&gt; tags, but adds no functionality. All indexes are treated the
  * same by the Table.
  * 
- * @version $Revision$
+ * @version $Revision: 630717 $
  */
 public class UniqueIndex extends IndexImplBase {
 	/** Unique ID for serialization purposes. */

@@ -33,7 +33,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 /**
  * Represents a column in the database model.
  * 
- * @version $Revision$
+ * @version $Revision: 668049 $
  */
 public class Column implements Serializable {
 	/** Unique ID for serialization purposes. */

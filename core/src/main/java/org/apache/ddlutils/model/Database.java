@@ -41,7 +41,7 @@ import org.apache.ddlutils.dynabean.SqlDynaException;
  * contains the corresponding dyna classes for creating dyna beans for the
  * objects stored in the tables.
  * 
- * @version $Revision$
+ * @version $Revision: 636151 $
  */
 public class Database implements Serializable {
 	/** Unique ID for serialization purposes. */

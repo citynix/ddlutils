@@ -28,7 +28,7 @@ import org.apache.ddlutils.model.Column;
  * property is a primary key column, an autoIncrement column and the SQL type
  * etc.
  * 
- * @version $Revision$
+ * @version $Revision: 463757 $
  */
 public class SqlDynaProperty extends DynaProperty {
 	/** Unique ID for serializaion purposes. */

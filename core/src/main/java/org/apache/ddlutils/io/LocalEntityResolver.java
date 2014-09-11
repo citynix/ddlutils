@@ -31,7 +31,7 @@ import org.xml.sax.SAXException;
  * An entity resolver that matches the specific database dtds to the one that
  * comes with DdlUtils, and that can handle file url's.
  * 
- * @version $Revision$
+ * @version $Revision: 481151 $
  */
 public class LocalEntityResolver implements EntityResolver {
 	/** The default DTD. */

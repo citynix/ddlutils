@@ -28,7 +28,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * Represents a reference between a column in the local table and a column in
  * another table.
  * 
- * @version $Revision$
+ * @version $Revision: 602807 $
  */
 public class Reference implements Serializable {
 	/** Unique ID for serialization purposes. */

@@ -36,7 +36,7 @@ import org.apache.ddlutils.util.StringUtilsExt;
 /**
  * The SQL Builder for Sybase.
  * 
- * @version $Revision$
+ * @version $Revision: 893917 $
  */
 public class SybaseBuilder extends SqlBuilder {
 	/**

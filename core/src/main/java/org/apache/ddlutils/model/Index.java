@@ -25,7 +25,7 @@ import java.io.Serializable;
  * Represents an index definition for a table which may be either unique or
  * non-unique.
  * 
- * @version $Revision$
+ * @version $Revision: 893917 $
  */
 public interface Index extends Serializable {
 	/**

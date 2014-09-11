@@ -35,7 +35,7 @@ import org.apache.ddlutils.platform.SqlBuilder;
 /**
  * The SQL Builder for MySQL.
  * 
- * @version $Revision$
+ * @version $Revision: 630717 $
  */
 public class MySqlBuilder extends SqlBuilder {
 	/**

@@ -36,7 +36,7 @@ import org.apache.ddlutils.DatabaseOperationException;
  * operations. It contains a number of useful methods for implementation
  * inheritence..
  * 
- * @version $Revision$
+ * @version $Revision: 463757 $
  */
 public abstract class JdbcSupport {
 	/** The Log to which logging calls will be made. */

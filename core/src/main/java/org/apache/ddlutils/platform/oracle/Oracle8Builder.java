@@ -39,7 +39,7 @@ import org.apache.ddlutils.util.StringUtilsExt;
 /**
  * The SQL Builder for Oracle.
  * 
- * @version $Revision$
+ * @version $Revision: 893917 $
  */
 public class Oracle8Builder extends SqlBuilder {
 	/** The regular expression pattern for ISO dates, i.e. 'YYYY-MM-DD'. */

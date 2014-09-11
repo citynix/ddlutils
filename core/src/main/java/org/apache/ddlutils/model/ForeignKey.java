@@ -31,7 +31,7 @@ import org.apache.ddlutils.util.StringUtilsExt;
 /**
  * Represents a database foreign key.
  * 
- * @version $Revision$
+ * @version $Revision: 630717 $
  */
 public class ForeignKey implements Serializable {
 	/** Unique ID for serialization purposes. */

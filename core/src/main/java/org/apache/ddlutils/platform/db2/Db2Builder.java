@@ -33,7 +33,7 @@ import org.apache.ddlutils.platform.SqlBuilder;
 /**
  * The SQL Builder for DB2.
  * 
- * @version $Revision$
+ * @version $Revision: 711687 $
  */
 public class Db2Builder extends SqlBuilder {
 	/**

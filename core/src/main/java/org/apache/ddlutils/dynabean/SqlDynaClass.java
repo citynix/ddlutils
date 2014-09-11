@@ -30,7 +30,7 @@ import org.apache.ddlutils.model.Table;
  * SqlDynaClass is a DynaClass which is associated with a persistent Table in a
  * Database.
  * 
- * @version $Revision$
+ * @version $Revision: 630717 $
  */
 public class SqlDynaClass extends BasicDynaClass {
 	/** Unique ID for serializaion purposes. */

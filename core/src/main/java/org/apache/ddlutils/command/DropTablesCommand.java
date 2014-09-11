@@ -19,13 +19,14 @@ package org.apache.ddlutils.command;
  * under the License.
  */
 
+import java.util.ArrayList;
+
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.ddlutils.Platform;
 import org.apache.ddlutils.model.CloneHelper;
 import org.apache.ddlutils.model.Database;
 import org.apache.ddlutils.model.ModelHelper;
 import org.apache.ddlutils.model.Table;
-import org.apache.ddlutils.task.TaskHelper;
 
 /**
  * Sub task for dropping tables.
@@ -52,8 +53,7 @@ public class DropTablesCommand extends DatabaseCommandWithModel {
 	 *                   be dropped.
 	 */
 	public void setTables(String tableNameList) {
-		_tableNames = new TaskHelper()
-				.parseCommaSeparatedStringList(tableNameList);
+		_tableNames = this.parseCommaSeparatedStringList(tableNameList);
 	}
 
 	/**
@@ -119,5 +119,35 @@ public class DropTablesCommand extends DatabaseCommandWithModel {
 		} catch (Exception ex) {
 			handleException(ex, ex.getMessage());
 		}
+	}
+
+	private String[] parseCommaSeparatedStringList(String stringList) {
+		String[] tokens = stringList.split(",");
+		ArrayList values = new ArrayList();
+		String last = null;
+
+		for (int idx = 0; idx < tokens.length; idx++) {
+			String str = tokens[idx];
+			int strLen = str.length();
+			boolean endsInSlash = (strLen > 0)
+					&& (str.charAt(strLen - 1) == '\\')
+					&& ((strLen == 1) || (str.charAt(strLen - 2) != '\\'));
+
+			if (last != null) {
+				last += "," + str;
+				if (!endsInSlash) {
+					values.add(last);
+					last = null;
+				}
+			} else if (endsInSlash) {
+				last = str.substring(0, strLen - 1);
+			} else {
+				values.add(str);
+			}
+		}
+		if (last != null) {
+			values.add(last + ",");
+		}
+		return (String[]) values.toArray(new String[values.size()]);
 	}
 }

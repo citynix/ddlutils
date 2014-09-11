@@ -33,7 +33,7 @@ import org.apache.ddlutils.platform.SqlBuilder;
 /**
  * The SQL Builder for PostgresSql.
  * 
- * @version $Revision$
+ * @version $Revision: 712002 $
  */
 public class PostgreSqlBuilder extends SqlBuilder {
 	/**

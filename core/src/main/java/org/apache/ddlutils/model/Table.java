@@ -36,7 +36,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 /**
  * Represents a table in the database model.
  * 
- * @version $Revision$
+ * @version $Revision: 668047 $
  */
 public class Table implements Serializable {
 	/** Unique ID for serialization purposes. */

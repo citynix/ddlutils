@@ -27,7 +27,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 /**
  * Represents a column of an index in the database model.
  * 
- * @version $Revision$
+ * @version $Revision: 602807 $
  */
 public class IndexColumn implements Serializable {
 	/** Unique ID for serialization purposes. */

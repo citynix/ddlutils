@@ -56,7 +56,7 @@ import org.apache.ddlutils.model.UniqueIndex;
 /**
  * An utility class to create a Database model from a live database.
  * 
- * @version $Revision$
+ * @version $Revision: 1002945 $
  */
 public class JdbcModelReader {
 	/** The Log to which logging calls will be made. */

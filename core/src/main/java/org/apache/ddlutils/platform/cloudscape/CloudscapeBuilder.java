@@ -29,7 +29,7 @@ import org.apache.ddlutils.platform.SqlBuilder;
 /**
  * The SQL Builder for Cloudscape.
  * 
- * @version $Revision$
+ * @version $Revision: 463757 $
  */
 public class CloudscapeBuilder extends SqlBuilder {
 	/**
